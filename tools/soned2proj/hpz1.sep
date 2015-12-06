@@ -1,0 +1,42 @@
+Type: 2
+
+Zone ID:    7
+Act ID:     0
+
+Object Def: objdef\s2obj
+
+8x8 Tiles:     ..\art\kosinski\HPZ.kos
+
+16x16 Tiles:   ..\mappings\16x16\HPZ.kos
+
+128x128 Tiles: ..\mappings\128x128\HPZ.kos
+
+Level Layout:  ..\level\layout\HPZ_1.kos
+
+Objects:       ..\level\objects\HPZ_1.bin
+Rings:         ..\level\rings\HPZ_1.bin
+Misc:          NONE
+
+Palettes-
+
+ Number of files: 2
+
+  Palette 1-
+
+   Start index:        0
+   Number of entries: 16
+   File:              ..\art\palettes\SonicAndTails.bin
+
+  Palette 2-
+
+   Start index:       16
+   Number of entries: 48
+   File:              ..\art\palettes\HPZ.pal
+
+Angle Array:             ..\collision\Curve and resistance mapping.bin
+Collision Array:         ..\collision\Collision array 1.bin
+Rotated Collision Array: ..\collision\Collision array 2.bin
+
+Collision Index 1: ..\collision\HPZ primary 16x16 collision index.col
+
+-EOF-

@@ -3766,8 +3766,8 @@ Pal_WZ:    BINCLUDE "art/palettes/Wood Zone.bin" ; Wood Zone palette
 Pal_MTZ:   BINCLUDE "art/palettes/MTZ.bin" ; Metropolis Zone palette
 Pal_WFZ:   BINCLUDE "art/palettes/WFZ.bin" ; Wing Fortress Zone palette
 Pal_HTZ:   BINCLUDE "art/palettes/HTZ.bin" ; Hill Top Zone palette
-Pal_HPZ:   BINCLUDE "art/palettes/HPZ.bin" ; Hidden Palace Zone palette
-Pal_HPZ_U: BINCLUDE "art/palettes/HPZ underwater.bin" ; Hidden Palace Zone underwater palette
+Pal_HPZ:   BINCLUDE "art/palettes/HPZ.pal" ; Hidden Palace Zone palette
+Pal_HPZ_U: BINCLUDE "art/palettes/HPZ underwater.pal" ; Hidden Palace Zone underwater palette
 Pal_OOZ:   BINCLUDE "art/palettes/OOZ.bin" ; Oil Ocean Zone palette
 Pal_MCZ:   BINCLUDE "art/palettes/MCZ.bin" ; Mystic Cave Zone palette
 Pal_CNZ:   BINCLUDE "art/palettes/CNZ.bin" ; Casino Night Zone palette
@@ -5469,7 +5469,7 @@ Off_ColP:
 	dc.l ColP_MTZ		; 5
 	dc.l ColP_WFZSCZ	; 6
 	dc.l ColP_EHZHTZ	; 7
-	dc.l ColP_OOZ		; 8
+	dc.l ColP_HPZ		; 8
 	dc.l Off_Level		; 9
 	dc.l ColP_OOZ		; 10
 	dc.l ColP_MCZ		; 11
@@ -5494,7 +5494,7 @@ Off_ColS:
 	dc.l ColP_MTZ	; 5
 	dc.l ColS_WFZSCZ	; 6
 	dc.l ColS_EHZHTZ	; 7
-	dc.l ColP_OOZ	; 8
+	dc.l ColP_HPZ	; 8
 	dc.l Off_Level	; 9
 	dc.l ColP_OOZ	; 10
 	dc.l ColP_MCZ	; 11
@@ -13858,8 +13858,8 @@ WrdArr_LvlSize:
 	dc.w	$0,	$3FFF,	$0,	$720
 	dc.w	$0,	$2800,	$0,	$720	; $07 ; HTZ act 1
 	dc.w	$0,	$3280,	$0,	$720		; HTZ act 2
-	dc.w	$0,	$3FFF,	$0,	$720	; $08
-	dc.w	$0,	$3FFF,	$0,	$720
+	dc.w	$0,	$2400,	-$800,	$720	; $08
+	dc.w	$0,	$2400,	-$800,	$720
 	dc.w	$0,	$3FFF,	$0,	$720	; $09
 	dc.w	$0,	$3FFF,	$0,	$720
 	dc.w	$0,	$2F80,	$0,	$680	; $0A ; OOZ act 1
@@ -81437,7 +81437,7 @@ PLC_DYNANM:				; Zone ID
 	dc.w Animated_HTZ-PLC_DYNANM
 
 	dc.w Dynamic_Normal-PLC_DYNANM	; $08
-	dc.w Animated_OOZ-PLC_DYNANM
+	dc.w Animated_HPZ-PLC_DYNANM
 
 	dc.w Dynamic_Null-PLC_DYNANM	; $09
 	dc.w Animated_Null-PLC_DYNANM
@@ -81806,26 +81806,26 @@ Animated_HTZ:
 	dc.b   2,  9
 
 ; word_4009C: Animated_HPZ:
-Animated_OOZ:
+Animated_HPZ:
 	dc.w 2
-	; Pulsing ball from OOZ
-	zoneanimdecl  8, ArtUnc_OOZPulseBall, $5D00,   6, 8
+	; Pulsating Orbs from HPZ
+	zoneanimdecl  8, ArtUnc_Orbs, $5D00,   6, 8
 	dc.b   0
 	dc.b   0
 	dc.b   8
 	dc.b $10
 	dc.b $10
 	dc.b   8
-	; Pulsing ball from OOZ
-	zoneanimdecl  8, ArtUnc_OOZPulseBall, $5E00,   6, 8
+	; Pulsating Orbs from HPZ
+	zoneanimdecl  8, ArtUnc_Orbs, $5E00,   6, 8
 	dc.b   8
 	dc.b $10
 	dc.b $10
 	dc.b   8
 	dc.b   0
 	dc.b   0
-	; Pulsing ball from OOZ
-	zoneanimdecl  8, ArtUnc_OOZPulseBall, $5F00,   6, 8
+	; Pulsating Orbs from HPZ
+	zoneanimdecl  8, ArtUnc_Orbs, $5F00,   6, 8
 	dc.b $10
 	dc.b   8
 	dc.b   0
@@ -83551,7 +83551,7 @@ JmpTbl_DbgObjLists:
 	dc.w DbgObjList_MTZ - JmpTbl_DbgObjLists ; 5
 	dc.w DbgObjList_WFZ - JmpTbl_DbgObjLists ; 6
 	dc.w DbgObjList_HTZ - JmpTbl_DbgObjLists ; 7
-	dc.w DbgObjList_OOZ - JmpTbl_DbgObjLists ; 8
+	dc.w DbgObjList_HPZ - JmpTbl_DbgObjLists ; 8
 	dc.w DbgObjList_Def - JmpTbl_DbgObjLists ; 9
 	dc.w DbgObjList_OOZ - JmpTbl_DbgObjLists ; $A
 	dc.w DbgObjList_MCZ - JmpTbl_DbgObjLists ; $B
@@ -83707,6 +83707,13 @@ DbgObjList_HTZ: dbglistheader
 	dbglistobj $95, Obj95_MapUnc_372E6,   0,   0,  0,    0
 	dbglistobj $3E, Obj3E_MapUnc_3F436,   0,   0,  2, $680
 DbgObjList_HTZ_End
+
+DbgObjList_HPZ: dbglistheader
+	dbglistobj $25, Obj25_MapUnc_12382,   0,   0,  2, $6BC
+	dbglistobj $26, Obj26_MapUnc_12D36,   8,   0,  0, $680
+	dbglistobj $79, Obj79_MapUnc_1F424,   1,   0,  0, $47C
+;TODO: debug list
+DbgObjList_HPZ_End
 
 DbgObjList_OOZ: dbglistheader
 	dbglistobj $25, Obj25_MapUnc_12382,   0,   0,  2, $6BC
@@ -83929,7 +83936,7 @@ LevelArtPointers:
 	levartptrs  $C, $D,  8, ArtKos_MTZ, BM16_MTZ, BM128_MTZ ;   5 ; MTZ3 ; METROPOLIS ZONE ACT 3
 	levartptrs $10,$11, $A, ArtKos_SCZ, BM16_WFZ, BM128_WFZ ;   6 ; WFZ  ; WING FORTRESS ZONE
 	levartptrs $12,$13, $B, ArtKos_EHZ, BM16_EHZ, BM128_EHZ ;   7 ; HTZ  ; HILL TOP ZONE
-	levartptrs $14,$15, $C,   BM16_OOZ,   BM16_OOZ,  BM16_OOZ ;   8 ; HPZ  ; HIDDEN PALACE ZONE (UNUSED)
+	levartptrs $14,$15, $C, ArtKos_HPZ, BM16_HPZ, BM128_HPZ ;   8 ; HPZ  ; HIDDEN PALACE ZONE (UNUSED)
 	levartptrs $16,$17, $D, ArtKos_EHZ, BM16_EHZ, BM128_EHZ ;   9 ; LEV9 ; LEVEL 9 (UNUSED)
 	levartptrs $18,$19, $E, ArtKos_OOZ, BM16_OOZ, BM128_OOZ ;  $A ; OOZ  ; OIL OCEAN ZONE
 	levartptrs $1A,$1B, $F, ArtKos_MCZ, BM16_MCZ, BM128_MCZ ;  $B ; MCZ  ; MYSTIC CAVE ZONE
@@ -83988,8 +83995,8 @@ ArtLoadCues:
 	dc.w PlrList_Wfz2 - ArtLoadCues	; 17
 	dc.w PlrList_Htz1 - ArtLoadCues	; 18
 	dc.w PlrList_Htz2 - ArtLoadCues	; 19
-	dc.w PLC_10 - ArtLoadCues	; 20
-	dc.w PLC_10 - ArtLoadCues	; 21
+	dc.w PlrList_Hpz1 - ArtLoadCues	; 20
+	dc.w PlrList_Hpz2 - ArtLoadCues	; 21
 	dc.w PLC_10 - ArtLoadCues	; 22
 	dc.w PLC_10 - ArtLoadCues	; 23
 	dc.w PLC_10 - ArtLoadCues	; 24
@@ -84226,6 +84233,30 @@ PlrList_Htz2: plrlistheader
 	plreq $82C0, ArtNem_HtzFireball
 	plreq $84C0, ArtNem_HtzValveBarrier
 PlrList_Htz2_End
+;---------------------------------------------------------------------------------------
+; Pattern load queue
+; HPZ Primary
+;---------------------------------------------------------------------------------------
+PlrList_Hpz1: plrlistheader
+	plreq $6000, ArtNem_Bridge
+	plreq $62A0, ArtNem_WatrFall
+	plreq $6940, ArtNem_Platform
+	plreq $6B40, ArtNem_Orbs
+	plreq $6F80, ArtNem_UnkPtfm
+	plreq $7240, ArtNem_Emerald
+	plreq $8000, ArtNem_Init_Spr		
+PlrList_Hpz1_End
+;---------------------------------------------------------------------------------------
+; Pattern load queue
+; HPZ secondary
+;---------------------------------------------------------------------------------------
+PlrList_Hpz2: plrlistheader
+;plreq $6000, ArtNem_Crocobot
+;plreq $7880, ArtNem_Rhinobot
+	plreq $A000, ArtNem_Dinobot
+	plreq $A600, ArtNem_Batbot
+;plreq $A600, ArtNem_Hpz_Piranha		
+PlrList_Hpz2_End
 ;---------------------------------------------------------------------------------------
 ; Pattern load queue
 ; OOZ Primary
@@ -84680,6 +84711,9 @@ ColS_EHZHTZ:	BINCLUDE	"collision/EHZ and HTZ secondary 16x16 collision index.bin
 ; MTZ primary 16x16 collision index (Kosinski compression)
 ColP_MTZ:	BINCLUDE	"collision/MTZ primary 16x16 collision index.bin"
 ;---------------------------------------------------------------------------------------
+; HPZ primary 16x16 collision index (Kosinski compression)
+ColP_HPZ:	BINCLUDE	"collision/HPZ primary 16x16 collision index.kos"
+;---------------------------------------------------------------------------------------
 ; OOZ primary 16x16 collision index (Kosinski compression)
 ColP_OOZ:	BINCLUDE	"collision/OOZ primary 16x16 collision index.bin"
 ;---------------------------------------------------------------------------------------
@@ -84711,8 +84745,7 @@ ColP_WFZSCZ:	BINCLUDE	"collision/WFZ and SCZ primary 16x16 collision index.bin"
 ColS_WFZSCZ:	BINCLUDE	"collision/WFZ and SCZ secondary 16x16 collision index.bin"
 ;---------------------------------------------------------------------------------------
 
-
-
+	align $100
 
 ;---------------------------------------------------------------------------------------
 ; Offset index of level layouts
@@ -84736,8 +84769,8 @@ Off_Level:
 	dc.w Level_WFZ-Off_Level; 13
 	dc.w Level_HTZ1-Off_Level; 14
 	dc.w Level_HTZ2-Off_Level; 15
-	dc.w Level_OOZ1-Off_Level; 16
-	dc.w Level_OOZ1-Off_Level; 17
+	dc.w Level_HPZ1-Off_Level; 16
+	dc.w Level_HPZ2-Off_Level; 17
 	dc.w Level_EHZ1-Off_Level; 18
 	dc.w Level_EHZ1-Off_Level; 19
 	dc.w Level_OOZ1-Off_Level; 20
@@ -84778,6 +84811,12 @@ Level_HTZ1:	BINCLUDE	"level/layout/HTZ_1.bin"
 ;---------------------------------------------------------------------------------------
 ; HTZ act 2 level layout (Kosinski compression)
 Level_HTZ2:	BINCLUDE	"level/layout/HTZ_2.bin"
+;---------------------------------------------------------------------------------------
+; HPZ act 1 level layout (Kosinski compression)
+Level_HPZ1:	BINCLUDE	"level/layout/HPZ_1.kos"
+;---------------------------------------------------------------------------------------
+; HPZ act 2 level layout (Kosinski compression)
+Level_HPZ2:	BINCLUDE	"level/layout/HPZ_1.kos"	;we don't have an act 2 yet so we will use act 1 in its's place.
 ;---------------------------------------------------------------------------------------
 ; OOZ act 1 level layout (Kosinski compression)
 Level_OOZ1:	BINCLUDE	"level/layout/OOZ_1.bin"
@@ -84850,6 +84889,10 @@ ArtUnc_Lava:	BINCLUDE	"art/uncompressed/Lava.bin"
 ; Uncompressed art
 ; Animated section of MTZ background ; ArtUnc_4BD3E:
 ArtUnc_MTZAnimBack:	BINCLUDE	"art/uncompressed/Animated section of MTZ background.bin"
+;---------------------------------------------------------------------------------------
+; Uncompressed art
+; Pulsating Orbs from HPZ
+ArtUnc_Orbs:	BINCLUDE	"art/uncompressed/Orbs.dat"
 ;---------------------------------------------------------------------------------------
 ; Uncompressed art
 ; Pulsing ball in OOZ   ; ArtUnc_4BF7E:
@@ -85726,6 +85769,42 @@ ArtNem_Crawl:	BINCLUDE	"art/nemesis/Bouncer badnik from CNZ.bin"
 	even
 ArtNem_TornadoThruster:	BINCLUDE	"art/nemesis/Rocket thruster for Tornado.bin"
 ;--------------------------------------------------------------------------------------
+	even
+ArtNem_Batbot:	BINCLUDE	"art/nemesis/Batbot.nem"
+;--------------------------------------------------------------------------------------
+	even
+ArtNem_Rhinobot:	BINCLUDE	"art/nemesis/Rhinobot.nem"
+;--------------------------------------------------------------------------------------
+	even
+ArtNem_Crocobot:	BINCLUDE	"art/nemesis/Crocobot.nem"
+;--------------------------------------------------------------------------------------
+	even
+ArtNem_Dinobot:	BINCLUDE	"art/nemesis/Dinobot.nem"
+;--------------------------------------------------------------------------------------
+	even
+ArtNem_Hpz_Piranha:	BINCLUDE	"art/nemesis/Piranha.nem"
+;--------------------------------------------------------------------------------------
+	even
+ArtNem_Bridge:	BINCLUDE	"art/nemesis/Bridge.nem"
+;--------------------------------------------------------------------------------------
+	even
+ArtNem_Emerald:	BINCLUDE	"art/nemesis/Emerald.nem"
+;--------------------------------------------------------------------------------------
+	even
+ArtNem_WatrFall:	BINCLUDE	"art/nemesis/WatrFall.nem"
+;--------------------------------------------------------------------------------------
+	even
+ArtNem_Orbs:	BINCLUDE	"art/nemesis/Orbs.nem"
+;--------------------------------------------------------------------------------------
+	even
+ArtNem_Platform:	BINCLUDE	"art/nemesis/Platform.nem"
+;--------------------------------------------------------------------------------------
+	even
+ArtNem_UnkPtfm:	BINCLUDE	"art/nemesis/UnkPtfm.nem"
+;--------------------------------------------------------------------------------------
+	even
+ArtNem_Init_Spr:	BINCLUDE	"art/nemesis/Init_Spr.nem"
+;--------------------------------------------------------------------------------------
 ; Enigma compressed sprite mappings
 ; Frame 1 of end of game sequence	; MapEng_906E0:
 MapEng_Ending1:	BINCLUDE	"mappings/misc/End of game sequence frame 1.bin"
@@ -85906,6 +85985,15 @@ ArtKos_MTZ:	BINCLUDE	"art/kosinski/MTZ.bin"
 ;-----------------------------------------------------------------------------------
 ; MTZ 128x128 block mappings (Kosinski compression)
 BM128_MTZ:	BINCLUDE	"mappings/128x128/MTZ.bin"
+;-----------------------------------------------------------------------------------
+; HPZ 16x16 block mappings (Kosinski compression)
+BM16_HPZ:	BINCLUDE	"mappings/16x16/HPZ.kos"
+;-----------------------------------------------------------------------------------
+; HPZ main level patterns (Kosinski compression)
+ArtKos_HPZ:	BINCLUDE	"art/kosinski/HPZ.kos"
+;-----------------------------------------------------------------------------------
+; HPZ 128x128 block mappings (Kosinski compression)
+BM128_HPZ:	BINCLUDE	"mappings/128x128/HPZ.kos"
 ;-----------------------------------------------------------------------------------
 ; OOZ 16x16 block mappings (Kosinski compression)
 BM16_OOZ:	BINCLUDE	"mappings/16x16/OOZ.bin"
