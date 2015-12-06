@@ -1,0 +1,43 @@
+Type: 2
+
+Zone ID:    5
+Act ID:     0
+
+Object Def: objdef\s2obj
+
+8x8 Tiles:     ..\art\kosinski\WZ.bin
+
+16x16 Tiles:   ..\mappings\16x16\WZ.bin
+
+128x128 Tiles: ..\mappings\128x128\WZ.bin
+
+Level Layout:  ..\level\layout\WZ_1.bin
+
+Objects:       ..\level\objects\WZ_1.bin
+Rings:         ..\level\rings\WZ_1.bin
+Misc:          NONE
+
+Palettes-
+
+ Number of files: 2
+
+  Palette 1-
+
+   Start index:        0
+   Number of entries: 16
+   File:              ..\art\palettes\SonicAndTails.bin
+
+  Palette 2-
+
+   Start index:       16
+   Number of entries: 48
+   File:              ..\art\palettes\WZ.pal
+
+Angle Array:             ..\collision\Curve and resistance mapping.bin
+Collision Array:         ..\collision\Collision array 1.bin
+Rotated Collision Array: ..\collision\Collision array 2.bin
+
+Collision Index 1: ..\collision\WZ primary 16x16 collision index.bin
+Collision Index 2: ..\collision\WZ secondary 16x16 collision index.bin
+
+-EOF-

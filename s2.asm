@@ -3762,7 +3762,7 @@ Pal_Title: BINCLUDE "art/palettes/Title screen.bin" ; Title screen Palette
 Pal_UNK1:  BINCLUDE "art/palettes/Unknown 1.bin" ; Unknown palette 1 (leftover S1 level select palette?)
 Pal_BGND:  BINCLUDE "art/palettes/SonicAndTails.bin" ; "Sonic and Miles" background palette (also usually the primary palette line)
 Pal_EHZ:   BINCLUDE "art/palettes/EHZ.bin" ; Emerald Hill Zone palette
-Pal_WZ:    BINCLUDE "art/palettes/Wood Zone.bin" ; Wood Zone palette
+Pal_WZ:    BINCLUDE "art/palettes/WZ.pal" ; Wood Zone palette
 Pal_MTZ:   BINCLUDE "art/palettes/MTZ.bin" ; Metropolis Zone palette
 Pal_WFZ:   BINCLUDE "art/palettes/WFZ.bin" ; Wing Fortress Zone palette
 Pal_HTZ:   BINCLUDE "art/palettes/HTZ.bin" ; Hill Top Zone palette
@@ -5463,7 +5463,7 @@ LoadCollisionIndexes:
 Off_ColP:
 	dc.l ColP_EHZHTZ
 	dc.l Off_Level		; 1
-	dc.l ColP_MTZ		; 2
+	dc.l ColP_WZ		; 2
 	dc.l Off_Level		; 3
 	dc.l ColP_MTZ		; 4
 	dc.l ColP_MTZ		; 5
@@ -5488,7 +5488,7 @@ Off_ColP:
 Off_ColS:
 	dc.l ColS_EHZHTZ
 	dc.l Off_Level	; 1
-	dc.l ColP_MTZ	; 2
+	dc.l ColS_WZ	; 2
 	dc.l Off_Level	; 3
 	dc.l ColP_MTZ	; 4
 	dc.l ColP_MTZ	; 5
@@ -83929,8 +83929,8 @@ levartptrs macro plc1,plc2,palette,art,map16x16,map128x128
 ; dword_42594: MainLoadBlocks: saArtPtrs:
 LevelArtPointers:
 	levartptrs   4,  5,  4, ArtKos_EHZ, BM16_EHZ, BM128_EHZ ;   0 ; EHZ  ; EMERALD HILL ZONE
-	levartptrs   6,  7,  5, ArtKos_EHZ, BM16_EHZ, BM128_EHZ ;   1 ; LEV1 ; LEVEL 1 (UNUSED)
-	levartptrs   8,  9,  6, ArtKos_EHZ, BM16_EHZ, BM128_EHZ ;   2 ; LEV2 ; LEVEL 2 (UNUSED)
+	levartptrs   6,  7,  5, ArtKos_EHZ, BM16_EHZ, BM128_EHZ ;   1 ; LEV1 ; LEVEL 2 (UNUSED)
+	levartptrs   8,  9,  6, ArtKos_WZ, BM16_WZ, BM128_WZ ;   2 ; WZ ; WOOD ZONE (UNUSED)
 	levartptrs  $A, $B,  7, ArtKos_EHZ, BM16_EHZ, BM128_EHZ ;   3 ; LEV3 ; LEVEL 3 (UNUSED)
 	levartptrs  $C, $D,  8, ArtKos_MTZ, BM16_MTZ, BM128_MTZ ;   4 ; MTZ  ; METROPOLIS ZONE ACTS 1 & 2
 	levartptrs  $C, $D,  8, ArtKos_MTZ, BM16_MTZ, BM128_MTZ ;   5 ; MTZ3 ; METROPOLIS ZONE ACT 3
@@ -84708,6 +84708,12 @@ ColP_EHZHTZ:	BINCLUDE	"collision/EHZ and HTZ primary 16x16 collision index.bin"
 ; EHZ and HTZ secondary 16x16 collision index (Kosinski compression)
 ColS_EHZHTZ:	BINCLUDE	"collision/EHZ and HTZ secondary 16x16 collision index.bin"
 ;---------------------------------------------------------------------------------------
+; WZ secondary 16x16 collision index (Kosinski compression)
+ColP_WZ:		BINCLUDE	"collision/WZ primary 16x16 collision index.bin"
+;---------------------------------------------------------------------------------------
+; WZ primary 16x16 collision index (Kosinski compression)
+ColS_WZ:	BINCLUDE	"collision/WZ secondary 16x16 collision index.bin"
+;---------------------------------------------------------------------------------------
 ; MTZ primary 16x16 collision index (Kosinski compression)
 ColP_MTZ:	BINCLUDE	"collision/MTZ primary 16x16 collision index.bin"
 ;---------------------------------------------------------------------------------------
@@ -84757,8 +84763,8 @@ Off_Level:
 	dc.w Level_EHZ2-Off_Level; 1
 	dc.w Level_EHZ1-Off_Level; 2
 	dc.w Level_EHZ1-Off_Level; 3
-	dc.w Level_EHZ1-Off_Level; 4
-	dc.w Level_EHZ1-Off_Level; 5
+	dc.w Level_WZ1-Off_Level; 4
+	dc.w Level_WZ2-Off_Level; 5
 	dc.w Level_EHZ1-Off_Level; 6
 	dc.w Level_EHZ1-Off_Level; 7
 	dc.w Level_MTZ1-Off_Level; 8
@@ -84794,6 +84800,12 @@ Level_EHZ1:	BINCLUDE	"level/layout/EHZ_1.bin"
 ; EHZ act 2 level layout (Kosinski compression)
 Level_EHZ2:	BINCLUDE	"level/layout/EHZ_2.bin"
 ;---------------------------------------------------------------------------------------
+; WZ act 1 level layout (Kosinski compression)
+Level_WZ1:	BINCLUDE	"level/layout/WZ_1.bin"
+;---------------------------------------------------------------------------------------
+; WZ act 2 level layout (Kosinski compression) TODO
+Level_WZ2:	BINCLUDE	"level/layout/WZ_1.bin"	;we don't have an act 2 yet so we will use act 1 in its's place.
+;---------------------------------------------------------------------------------------
 ; MTZ act 1 level layout (Kosinski compression)
 Level_MTZ1:	BINCLUDE	"level/layout/MTZ_1.bin"
 ;---------------------------------------------------------------------------------------
@@ -84815,7 +84827,7 @@ Level_HTZ2:	BINCLUDE	"level/layout/HTZ_2.bin"
 ; HPZ act 1 level layout (Kosinski compression)
 Level_HPZ1:	BINCLUDE	"level/layout/HPZ_1.kos"
 ;---------------------------------------------------------------------------------------
-; HPZ act 2 level layout (Kosinski compression)
+; HPZ act 2 level layout (Kosinski compression) TODO
 Level_HPZ2:	BINCLUDE	"level/layout/HPZ_1.kos"	;we don't have an act 2 yet so we will use act 1 in its's place.
 ;---------------------------------------------------------------------------------------
 ; OOZ act 1 level layout (Kosinski compression)
@@ -85976,6 +85988,15 @@ ArtKos_HTZ:	BINCLUDE	"art/kosinski/HTZ_Supp.bin"
 ; EHZ/HTZ 128x128 block mappings (Kosinski compression)
 BM128_EHZ:	BINCLUDE	"mappings/128x128/EHZ_HTZ.bin"
 ;-----------------------------------------------------------------------------------
+; WZ 16x16 block mappings (Kosinski compression)
+BM16_WZ:	BINCLUDE	"mappings/16x16/WZ.bin"
+;-----------------------------------------------------------------------------------
+; WZ main level patterns (Kosinski compression)
+ArtKos_WZ:	BINCLUDE	"art/kosinski/WZ.bin"
+;-----------------------------------------------------------------------------------
+; WZ 128x128 block mappings (Kosinski compression)
+BM128_WZ:	BINCLUDE	"mappings/128x128/WZ.bin"
+;-----------------------------------------------------------------------------------
 ; MTZ 16x16 block mappings (Kosinski compression)
 BM16_MTZ:	BINCLUDE	"mappings/16x16/MTZ.bin"
 ;-----------------------------------------------------------------------------------
@@ -86460,8 +86481,8 @@ Off_Objects:
 	dc.w	Objects_EHZ_2 - Off_Objects	; 1
 	dc.w	Objects_Null3 - Off_Objects	; 2  $01
 	dc.w	Objects_Null3 - Off_Objects	; 3
-	dc.w	Objects_Null3 - Off_Objects	; 4  $02
-	dc.w	Objects_Null3 - Off_Objects	; 5
+	dc.w	Objects_WZ_1 - Off_Objects	; 4  $02
+	dc.w	Objects_WZ_2 - Off_Objects	; 5
 	dc.w	Objects_Null3 - Off_Objects	; 6  $03
 	dc.w	Objects_Null3 - Off_Objects	; 7
 	dc.w	Objects_MTZ_1 - Off_Objects	; 8  $04
@@ -86496,6 +86517,8 @@ Off_Objects:
 
 Objects_EHZ_1:	BINCLUDE	"level/objects/EHZ_1.bin"
 Objects_EHZ_2:	BINCLUDE	"level/objects/EHZ_2.bin"
+Objects_WZ_1:	BINCLUDE	"level/objects/WZ_1.bin"
+Objects_WZ_2:	BINCLUDE	"level/objects/WZ_1.bin"	;TODO
 Objects_MTZ_1:	BINCLUDE	"level/objects/MTZ_1.bin"
 Objects_MTZ_2:	BINCLUDE	"level/objects/MTZ_2.bin"
 Objects_MTZ_3:	BINCLUDE	"level/objects/MTZ_3.bin"
