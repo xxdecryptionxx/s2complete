@@ -32917,6 +32917,9 @@ Obj01_InWater:
 	cmp.w	y_pos(a0),d0	; is Sonic above the water?
 	bge.s	Obj01_OutWater	; if yes, branch
 
+	tst.w	y_vel(a0)		; check if player is moving upward (i.e. from jumping)
+	bmi.s	return_1A18C	; if yes, skip routine
+
 	bset	#6,status(a0)	; set underwater flag
 	bne.s	return_1A18C	; if already underwater, branch
 
@@ -35903,8 +35906,11 @@ return_1BF58:
 ; loc_1BF5A:
 Obj02_InWater:
 	move.w	(Water_Level_1).w,d0
-	cmp.w	y_pos(a0),d0	; is Sonic above the water?
+	cmp.w	y_pos(a0),d0	; is Tails above the water?
 	bge.s	Obj02_OutWater	; if yes, branch
+
+	tst.w	y_vel(a0)		; check if player is moving upward (i.e. from jumping)
+	bmi.s	return_1BF58	; if yes, skip routine
 
 	bset	#6,status(a0)	; set underwater flag
 	bne.s	return_1BF58	; if already underwater, branch
