@@ -32716,6 +32716,7 @@ Obj01_States:
 	dc.w	Obj01_Dead - Obj01_States	; 6
 	dc.w	Obj01_Gone - Obj01_States	; 8
 	dc.w	Obj01_Respawning - Obj01_States	;$A
+	dc.w	Obj01_Drowned - Obj01_States	;$C
 ; ============== END JUMP TABLE =============================================
 ; loc_19F76: Obj_01_Sub_0: Obj01_Main:
 Obj01_Init:
@@ -34765,6 +34766,17 @@ Obj01_Respawning:
 ; ===========================================================================
 
 ; ---------------------------------------------------------------------------
+; Sonic when he's drowning
+; ---------------------------------------------------------------------------
+Obj01_Drowned:
+	bsr.w	ObjectMove	; Make Sonic able to move
+	addi.w	#$10,y_vel(a0)	; Apply gravity
+	bsr.w	Sonic_RecordPos	; Record position
+	bsr.w	Sonic_Animate	; Animate Sonic
+	bsr.w	LoadSonicDynPLC	; Load Sonic's DPLCs
+	bra.w	DisplaySprite	; And finally, display Sonic
+
+; ---------------------------------------------------------------------------
 ; Subroutine to animate Sonic's sprites
 ; See also: AnimateSprite
 ; ---------------------------------------------------------------------------
@@ -35256,11 +35268,12 @@ Obj02:
 ; off_1B8CC: Obj02_Index:
 Obj02_States:
 	dc.w Obj02_Init - Obj02_States		; 0
-	dc.w Obj02_Control - Obj02_States	; 2
+	dc.w Obj02_Control - Obj02_States		; 2
 	dc.w Obj02_Hurt - Obj02_States		; 4
 	dc.w Obj02_Dead - Obj02_States		; 6
 	dc.w Obj02_Gone - Obj02_States		; 8
 	dc.w Obj02_Respawning - Obj02_States	;$A
+	dc.w Obj02_Drowned - Obj02_States		;$C
 ; ============== END JUMP TABLE =============================================
 ; loc_1B8D8: Obj02_Main:
 Obj02_Init:
@@ -37490,6 +37503,17 @@ Obj02_Respawning:
 ; ===========================================================================
 
 ; ---------------------------------------------------------------------------
+; Tails when he's drowning
+; ---------------------------------------------------------------------------
+Obj02_Drowned:
+	bsr.w	ObjectMove	; Make Tails able to move
+	addi.w	#$10,y_vel(a0)	; Apply gravity
+	bsr.w	Tails_RecordPos	; Record position
+	bsr.s	Tails_Animate	; Animate Tails
+	bsr.w	LoadTailsDynPLC	; Load Tails's DPLCs
+	bra.w	DisplaySprite	; And finally, display Tails
+
+; ---------------------------------------------------------------------------
 ; Subroutine to animate Tails' sprites
 ; See also: AnimateSprite and Sonic_Animate
 ; ---------------------------------------------------------------------------
@@ -38301,16 +38325,9 @@ Obj0A_ReduceAir:
 
 loc_1D708:
 	subq.w	#1,objoff_2C(a0)
-	bne.s	+
+	bne.s	loc_1D72C		; Make it jump straight to this location
 	move.b	#6,routine(a2)
 	rts
-; ---------------------------------------------------------------------------
-+	move.l	a0,-(sp)
-	movea.l	a2,a0
-	jsr	ObjectMove
-	addi.w	#$10,y_vel(a0)
-	movea.l	(sp)+,a0 ; load 0bj address
-	bra.s	loc_1D72C
 ; ===========================================================================
 
 BranchTo_Obj0A_MakeItem 
