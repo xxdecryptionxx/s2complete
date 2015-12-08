@@ -16259,15 +16259,12 @@ loc_D76E:
 sub_D77A:
 	moveq	#0,d1
 	move.w	y_pos(a0),d0
-	bne.s	loc_D78E
-	sub.w	(a1),d0
-	cmpi.w	#-$100,(Camera_Min_Y_pos).w
-	andi.w	#$7FF,d0
-
-loc_D78E:
 	moveq	#$13,d2		; set default character height
 	sub.b	y_radius(a0),d2
 	sub.w	d2,d0	; get difference to character's actual height
+	sub.w	(a1),d0
+	cmpi.w	#-$100,(Camera_Min_Y_pos).w
+	andi.w	#$7FF,d0
 
 loc_D798:
 	btst	#1,status(a0)
