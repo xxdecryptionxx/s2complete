@@ -4629,6 +4629,7 @@ loc_4114:
 	moveq	#3,d0
 	bsr.w	PalLoad1	; load Sonic's palette line
 	bsr.w	LevelSizeLoad
+	bsr.w	InitPlayers
 	bsr.w	JmpTo_DeformBgLayer
 	clr.w	(Vscroll_Factor).w
 	move.w	#-$E0,($FFFFF61E).w
@@ -4642,7 +4643,6 @@ loc_4114:
 	jsr	(FloorLog_Unk).l
 	bsr.w	LoadCollisionIndexes
 	bsr.w	WaterEffects
-	bsr.w	InitPlayers
 	move.w	#0,(Ctrl_1_Logical).w
 	move.w	#0,(Ctrl_2_Logical).w
 	move.w	#0,(Ctrl_1).w
@@ -4876,6 +4876,7 @@ InitPlayers:
 
 	move.b	#1,(MainCharacter).w ; load Obj01 Sonic object at $FFFFB000
 	move.b	#8,(Sonic_Dust).w ; load Obj08 Sonic's spindash dust/splash object at $FFFFD100
+	move.b	#$13,(MainCharacter+y_radius).w		; Set Sonic's y-radius
 
 	cmpi.b	#6,(Current_Zone).w
 	beq.s	return_44BC ; skip loading Tails if this is WFZ
@@ -4907,6 +4908,7 @@ InitPlayers_Alone: ; either Sonic or Tails but not both
 InitPlayers_TailsAlone:
 	move.b	#2,(MainCharacter).w ; load Obj02 Tails object at $FFFFB000
 	move.b	#8,(Tails_Dust).w ; load Obj08 Tails' spindash dust/splash object at $FFFFD100
+	move.b	#$F,(MainCharacter+y_radius).w		; Set Tails' y-radius
 	addi.w	#4,(MainCharacter+y_pos).w
 	rts
 ; End of function InitPlayers
@@ -16257,15 +16259,15 @@ loc_D76E:
 sub_D77A:
 	moveq	#0,d1
 	move.w	y_pos(a0),d0
+	bne.s	loc_D78E
 	sub.w	(a1),d0
 	cmpi.w	#-$100,(Camera_Min_Y_pos).w
-	bne.s	loc_D78E
 	andi.w	#$7FF,d0
 
 loc_D78E:
-	btst	#2,status(a0)
-	beq.s	loc_D798
-	subq.w	#5,d0
+	moveq	#$13,d2		; set default character height
+	sub.b	y_radius(a0),d2
+	sub.w	d2,d0	; get difference to character's actual height
 
 loc_D798:
 	btst	#1,status(a0)
@@ -27020,6 +27022,8 @@ return_15FE4:
 ; this skips certain objects to make enemies and things pause when Sonic dies
 ; loc_15FE6:
 RunObjectsWhenPlayerIsDead:
+	cmpi.b	#$C,(MainCharacter+routine).w	; Has Sonic drowned?
+	beq.s	RunObject	; If so, run objects a little longer
 	moveq	#$10-1,d7
 	bsr.s	RunObject	; run the first $10 objects normally
 	moveq	#$70-1,d7
