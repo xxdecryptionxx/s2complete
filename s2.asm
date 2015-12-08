@@ -38294,6 +38294,7 @@ Obj0A_ReduceAir:
 	cmpa.w	#MainCharacter,a2
 	bne.s	+	; if it isn't player 1, branch
 	move.b	#1,($FFFFEEDC).w
+	clr.b	(Update_HUD_timer).w	; Stop the timer immediately
 +
 	rts
 ; ===========================================================================
