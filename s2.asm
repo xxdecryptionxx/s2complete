@@ -2232,7 +2232,6 @@ RunPLC_RAM:
 	adda.w	#NemDec_WriteAndStay_XOR-NemDec_WriteAndStay,a3
 +
 	andi.w	#$7FFF,d2
-	move.w	d2,($FFFFF6F8).w
 	bsr.w	NemDecPrepare
 	move.b	(a0)+,d5
 	asl.w	#8,d5
@@ -2246,6 +2245,7 @@ RunPLC_RAM:
 	move.l	d0,($FFFFF6EC).w
 	move.l	d5,($FFFFF6F0).w
 	move.l	d6,($FFFFF6F4).w
+	move.w	d2,($FFFFF6F8).w
 return_16DE
 	rts
 ; End of function RunPLC_RAM
