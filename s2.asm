@@ -35608,13 +35608,16 @@ loc_1BC54:
 loc_1BC64:
 	add.w	d2,y_pos(a0)
 
-loc_1BC68:
+loc_1BC68:	; Fix for Tails' underwater respawn
 	lea	(Sonic_Stat_Record_Buf).w,a2
 	move.b	2(a2,d3.w),d2
 	andi.b	#$D2,d2
 	bne.s	return_1BCDE
 	or.w	d0,d1
 	bne.s	return_1BCDE
+	move.w	#$600,(Tails_top_speed).w	; set Tails' top speed
+	move.w	#$C,(Tails_acceleration).w	; set Tails' acceleration
+	move.w	#$80,(Tails_deceleration).w	; set Tails' deceleration
 	move.w	#6,(Tails_CPU_routine).w	; => TailsCPU_Normal
 	move.b	#0,obj_control(a0)
 	move.b	#0,anim(a0)
