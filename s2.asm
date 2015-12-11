@@ -37961,8 +37961,12 @@ Obj05_Main:
 +
 	moveq	#0,d0
 	move.b	anim(a2),d0
-	btst	#5,status(a2)
-	beq.s	+
+	btst	#5,status(a2)		; is Tails about to push against something?
+	beq.s	+			; if not, branch
+	cmpi.b	#$63,mapping_frame(a2)	; Is Tails in his pushing animation yet?
+	blo.s	+			; If not yet, branch, and do not set tails' tail pushing animation
+	cmpi.b	#$66,mapping_frame(a2)	; ''
+	bhi.s	+			; ''
 	moveq	#4,d0
 +
 	cmp.b	objoff_30(a0),d0
@@ -37974,7 +37978,17 @@ loc_1D288:
 	lea	(Obj05AniData).l,a1
 	bsr.w	Tails_Animate_Part2
 	bsr.w	LoadTailsTailsDynPLC
-	jsr	DisplaySprite
+	movea.w	parent(a0),a1			; Move Tails' register to a1
+	move.w	invulnerable_time(a1),d0	; Move Tails' invulnerable time to d0
+	beq.s	.display			; Is invulnerable_time 0?  If so, always display his tails
+	addq.w	#1,d0				; Make d0 the same as old invulnerable_time's d0
+	lsr.w	#3,d0				; Shift bits to the right 3 times
+	bcc.s	.return				; If the Carry bit is not set, branch and do not display Tails' tails
+ 
+.display:
+	jmp	(DisplaySprite).l               ; Display Tails' tails
+ 
+.return:
 	rts
 ; ===========================================================================
 ; animation master script table for the tails
@@ -37986,8 +38000,8 @@ Obj05AniSelection:
 	dc.b	3	; TailsAni_Roll2	-> Directional
 	dc.b	9	; TailsAni_Push		-> Pushing
 	dc.b	1	; TailsAni_Wait		-> Swish
-	dc.b	0	; TailsAni_Balance	-> Blank
-	dc.b	2	; TailsAni_LookUp	-> Flick
+	dc.b	$A	; TailsAni_Balance	-> Blank
+	dc.b	1	; TailsAni_LookUp	-> Flick
 	dc.b	1	; TailsAni_Duck		-> Swish
 	dc.b	7	; TailsAni_Spindash	-> Spindash
 	dc.b	0,0,0	; TailsAni_Dummy1,2,3	->
